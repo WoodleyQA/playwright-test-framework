@@ -1,4 +1,5 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+
 
 export default defineConfig({
   testDir: './tests',
@@ -7,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',
   use: {
-    baseURL: 'https://petstore.swagger.io/v2/',
+    
     trace: 'on-first-retry',
   },
   projects: [
@@ -15,10 +16,19 @@ export default defineConfig({
       name: 'api',
       testDir: './tests/api',
       use: {
+        baseURL: 'https://petstore.swagger.io/v2/',
         extraHTTPHeaders: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
+      },
+    },
+    {
+      name: 'ui',
+      testDir: './tests/ui',
+      use: {
+        baseURL: 'https://demo.playwright.dev/todomvc/',
+        ...devices['Desktop Chrome'],
       },
     },
   ],
